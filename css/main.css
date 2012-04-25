@@ -61,10 +61,33 @@ input[type=text]:focus {
 
 	#sidebar .module-options {
 		margin: 10px 0;
+		padding: 0 5px;
+		border-bottom: dashed 1px #ccc;
 	}
+		#sidebar .module-options .header {
+			margin: 0 -5px;
+			padding: 5px;
+		}
+
+			#sidebar .module-options .header:hover {
+				background: #555;
+				cursor: pointer;
+			}
+
+		#sidebar .module-options .body {
+			display: none;
+		}
+
+		#sidebar .module-options.expanded .body {
+			display: block;
+		}
 
 		#sidebar .module-options label {
 			margin-left: 20px;
+		}
+
+		#sidebar .module-options input[type=text],  #sidebar .module-options textarea {
+			width: 330px;
 		}
 
 	#sidebar label {
@@ -77,15 +100,25 @@ input[type=text]:focus {
 		}
 		#sidebar label input[type=text], #sidebar label textarea {
 			display: block;
-			width: 80%;
+			width: 350px
 		}
 
-
+		#sidebar label textarea {
+		 	height: 100px;
+		}
 
 	#sidebar .description {
 		color: #aaa;
 		font-size: 10px;
 		line-height: 15px;
+	}
+
+	#sidebar .examples a {
+		text-decoration: none;
+		color: #fff;
+		border-bottom: dashed 1px #fff;
+		margin-left: 10px;
+		font-size: 10px;
 	}
 
 .ui-combine-list {
@@ -100,95 +133,69 @@ input[type=text]:focus {
 	border: solid 1px #aaa;
 }
 
-.ui-combine-list-group {
-	cursor: default;
-	border-bottom:  solid 1px #eee;
-}
-
-.ui-combine-list-group .ui-combine-list-item {
-	padding-left: 15px;
-}
-
-.ui-combine-list-group .ui-combine-list-group-title {
-	font-weight: bold;
-	padding: 2px 3px;
-	color: #777;
-}
-
-.ui-combine-list-item {
-	display: block;
-	width: auto;
-	padding: 2px 3px;
-	margin: 0;
-	cursor: pointer;
-}
-
-.ui-combine-list-item.ui-state-hover {
-	font-weight: normal;
-	background: #f2f2f2;
-	border: 0;
-	color: #222;
-}
-
-.ui-combine-list-item.ui-state-promt {
-	color: #aaa;
-	font-style: italic;
-}
-
-.ui-combine-list-button {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin: 2px 0 0 -27px;
-	vertical-align: top;
-	border-left: solid 1px #aaa;
-	border-radius: 0 2px 2px 0;
-	background: #f6f6f6 url(downarrow.png) 1px 0 no-repeat;
-	opacity: 0.9;
-}
-
-.ui-combine-list-button.ui-state-loading {
-	background: #f6f6f6 url(loader.gif) 4px 4px no-repeat;
-}
-
-.ui-combine-list-button:hover {
-	opacity: 1;
-	background-color: #f7fdf0;
-	cursor: pointer;
-}
-
-.ui-combine-list-item.ui-combine-item-list-default {
-	font-style: italic;
-	color: #aaa;
-}
-
-.ui-combine-container {
-	display: inline-block;
-	position: relative;
-	margin: 0;
-	overflow: hidden;
-	border: solid 1px #aaa;
-	box-sizing: border-box;
-}
-
-	.ui-combine-container .ui-combine-input {
-		margin: 0 -1px 0 -1px;
-		padding: 4px;
-		border: 0;
-		background: inherit;
+	.ui-combine-list-group {
+		cursor: default;
+		border-bottom:  solid 1px #eee;
 	}
-		.ui-combine-container .ui-combine-input:focus {
-			outline: 0;
-			border: 0;
-		}
 
-	.ui-combine-container .ui-combine-list-button {
-		position: absolute;
-		bottom: 0;
-		right: 0;
+	.ui-combine-list-group .ui-combine-list-item {
+		padding-left: 15px;
+	}
+
+	.ui-combine-list-group .ui-combine-list-group-title {
+		font-weight: bold;
+		padding: 2px 3px;
+		color: #777;
+	}
+
+	.ui-combine-list-item {
+		display: block;
+		width: auto;
+		padding: 2px 3px;
 		margin: 0;
-		border-top: solid 1px #aaa;
+		cursor: pointer;
 	}
+
+	.ui-combine-list-item.ui-state-hover {
+		font-weight: normal;
+		background: #f2f2f2;
+		border: 0;
+		color: #222;
+	}
+
+	.ui-combine-list-item.ui-state-promt {
+		color: #aaa;
+		font-style: italic;
+	}
+
+	.ui-combine-list-button {
+		display: inline-block;
+		width: 24px;
+		height: 24px;
+		margin: 2px 0 0 -27px;
+		vertical-align: top;
+		border-left: solid 1px #aaa;
+		border-radius: 0 2px 2px 0;
+		background: #f6f6f6 url(downarrow.png) 1px 0 no-repeat;
+		opacity: 0.9;
+	}
+
+	.ui-combine-list-button.ui-state-loading {
+		background: #f6f6f6 url(loader.gif) 4px 4px no-repeat;
+	}
+
+	.ui-combine-list-button:hover {
+		opacity: 1;
+		background-color: #f7fdf0;
+		cursor: pointer;
+	}
+
+	.ui-combine-list-item.ui-combine-item-list-default {
+		font-style: italic;
+		color: #aaa;
+	}
+
+
 
 .ui-combine-tokens-item {
 	position: relative;
@@ -221,7 +228,7 @@ input[type=text]:focus {
 	cursor: pointer;
 }
 
-.ui-inline.ui-combine-container {
+.ui-combine-container.ui-combine-multiple {
 	display: inline-block;
 	margin: 0;
 	padding: 1px;
@@ -230,7 +237,7 @@ input[type=text]:focus {
 	position: relative;
 	cursor: text;
 }
-	.ui-inline.ui-combine-container .ui-combine-input {
+	.ui-combine-container.ui-combine-multiple .ui-combine-input {
 		display: inline-block;
 		margin: 0 -1px 0 -1px;
 		padding: 3px;
@@ -238,20 +245,20 @@ input[type=text]:focus {
 		background: inherit;
 	}
 
-		.inline.ui-combine-container .ui-combine-input:focus {
+		.inline.ui-combine-container.ui-combine-multiple .ui-combine-input:focus {
 			outline: 0;
 			border: 0;
 		}
 
-	.ui-inline.ui-combine-container .ui-combine-list-button {
+	.ui-combine-container.ui-combine-multiple .ui-combine-list-button {
 		position: absolute;
-		bottom: 0;
-		right: 0;
+		bottom: -1px;
+		right: -1px;
 		margin: 0;
 		border-top: solid 1px #aaa;
 	}
 
-	.ui-inline.ui-combine-container .ui-combine-tokens-item {
+	.ui-combine-container.ui-combine-multiple .ui-combine-tokens-item {
 		display: inline-block;
 		position: relative;
 		margin: 1px;
@@ -259,14 +266,14 @@ input[type=text]:focus {
 		background: #eee;
 		line-height: 16px;
 	}
-		.ui-inline.ui-combine-container .ui-combine-tokens-item.ui-state-active {
+		.ui-combine-container.ui-combine-multiple .ui-combine-tokens-item.ui-state-active {
 			background: #ccc;
 			border: 0;
 			color: #222;
 			font-weight: normal;
 		}
 
-		.ui-inline.ui-combine-container .ui-combine-tokens-item-remove {
+		.ui-combine-container.ui-combine-multiple .ui-combine-tokens-item-remove {
 			display: inline-block;
 			position: absolute;
 			right: 1px;
@@ -282,12 +289,13 @@ input[type=text]:focus {
 	position: relative;
 	display: inline-block;
 	box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
-	margin: 2px 0;
+	margin: 2 0;
 	padding: 2px 0;
 	vertical-align: baseline;
 }
 	.ui-combine-container .ui-combine-input {
 		display: inline-block;
+		box-sizing: border-box;
 		margin: -2px 0;
 	}
 
@@ -300,6 +308,10 @@ input[type=text]:focus {
 		height: auto;
 		margin: 0; border: 1px solid #797269;
 	}
+
+.ui-combine-container.ui-combine-default-selected .ui-combine-input {
+	color: #aaa;
+}
 
 .ui-combine-container.ui-combine-multiple { display: inline-block; vertical-align: bottom; position: relative; padding: 0; margin: 0 0 2px 0; height: auto; overflow: hidden; border: solid 1px #aaa; border-radius: 2px; box-sizing: border-box; background: #fff; cursor: text;}
 	.ui-combine-container.ui-combine-multiple .ui-combine-input {position: relative; margin: -1px -1px -1px -1px; padding: 5px; border: 0; background: inherit; }

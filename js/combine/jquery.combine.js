@@ -137,12 +137,13 @@ $.widget("ui.combine", {
 		widget.modules = {};
 
 		$.each(widget.options.modules.split(" "), function(i, moduleName) {
-			var module = $.combine[moduleName];
+			var module = $.combine[moduleName],
+				moduleOptions,
+				options;
 
 			if(module) {
-				var moduleOptions = widget.options[moduleName] || {},
-					options = $.extend({}, widget.options, moduleOptions);
-
+				moduleOptions = widget.options[moduleName] || {};
+				options = $.extend({}, widget.options, moduleOptions);
 				widget._extendOptionsFromData(options, moduleName);
 				widget.modules[moduleName] = new module(options, widget.element);
 				widget.modules[moduleName].combine = widget;
@@ -178,6 +179,8 @@ $.widget("ui.combine", {
 					});
 				} else if(widget.options.selected) {
 					widget.select(widget._normalize(widget.options.selected));
+				} else {
+					widget.select();
 				}
 
 				widget._setOption("disabled", widget.options.disabled);
@@ -207,8 +210,6 @@ $.widget("ui.combine", {
 				} else {
 					widget.selected = null;
 				}
-
-				widget.element.data("combine-selected", widget.selected);
 			}
 		});
 	},
@@ -255,8 +256,10 @@ $.widget("ui.combine", {
 	},
 
 	search: function(term, extraParams) {
-		if(!this.disabled && false !== this._trigger("_before_search", {term : term, extraParams: extraParams})) {
-			this._trigger("_search", new $.Event("search"), {
+		var widget = this;
+
+		if(!widget.disabled && false !== widget._trigger("_before_search", {term : term, extraParams: extraParams})) {
+			widget._trigger("_search", new $.Event("search"), {
 				term: term,
 				extraParams: extraParams
 			});
@@ -264,8 +267,10 @@ $.widget("ui.combine", {
 	},
 
 	response: function(result, term) {
-		if(false !== this._trigger("_before_response", new $.Event("response"), {result: result, term: term})) {
-			this._trigger("_response", new $.Event("response"), {
+		var widget = this;
+
+		if(false !== widget._trigger("_before_response", new $.Event("response"), {result: result, term: term})) {
+			widget._trigger("_response", new $.Event("response"), {
 				result: result,
 				term: term
 			});
@@ -273,9 +278,11 @@ $.widget("ui.combine", {
 	},
 
 	select: function(item, added, event) {
+		var widget = this;
+
 		event = event || new $.Event("_select");
 
-		if(this.options.multiple && (!item || item.value === "")) {
+		if(widget.options.multiple && (!item || item.value === "")) {
 			return false;
 		}
 
@@ -283,8 +290,9 @@ $.widget("ui.combine", {
 			added = false;
 		}
 
-		if(!this.options.multiple && typeof item === "undefined") {
-			item = this._normalize(this.options.defaultItem);
+		if(!widget.options.multiple && (typeof item === "undefined" || item.value === "")) {
+			item = widget._normalize(widget.options.defaultItem);
+			item._default = true;
 		}
 
 		if(typeof item._combineAdded === "undefined") {
@@ -294,24 +302,26 @@ $.widget("ui.combine", {
 		}
 
 		if(item) {
-			if(!this.options.multiple && this.selected) {
-				this.deselect(this.selected);
+			if(!widget.options.multiple && widget.selected) {
+				widget.deselect(widget.selected);
 			}
 
-			if(false !== this._trigger("_before_select", event, {item : item, added: added})) {
-				this._trigger("_select", event, {
+			if(false !== widget._trigger("_before_select", event, {item : item, added: added})) {
+				widget._trigger("_select", event, {
 					item: item,
 					added: added
 				});
 			} else {
-				this.element.val("");
+				widget.element.val("");
 			}
 		}
 	},
 
 	deselect: function(item, $token) {
-		if(false !== this._trigger("_before_deselect", new $.Event("deselect"), {item : item})) {
-			this._trigger("_deselect", new $.Event("deselect"), {item : item, $token : $token});
+		var widget = this;
+
+		if(false !== widget._trigger("_before_deselect", new $.Event("deselect"), {item : item})) {
+			widget._trigger("_deselect", new $.Event("deselect"), {item : item, $token : $token});
 		}
 	},
 

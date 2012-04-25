@@ -20,7 +20,7 @@ $.widget("combine.tokens", {
 			widget._createTestDiv();
 			widget.combine = widget.element.data("combine");
 			widget.combine.options.posElement = widget.$container;
-			widget.element.data("originalWidth", widget.element.width());
+			widget.element.data("originalWidth", widget.element.outerWidth());
 			widget._bindEvents();
 		}
 	},
@@ -30,7 +30,6 @@ $.widget("combine.tokens", {
 
 		widget.$container = widget.element.parent();
 		widget.$container
-			.width(widget.element.width())
 			.addClass(widget.options.containerClass || "")
 			.addClass(widget.classes.MULTIPLE);
 	},

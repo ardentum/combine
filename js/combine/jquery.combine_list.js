@@ -382,6 +382,7 @@ $.widget("combine.list", {
 
 			widget._activate(event, widget.$items.eq(index));
 			widget.element.val(widget.$active.data("combine.item").label);
+			widget.element[0].select();
 		};
 
 		widget.element.data("preventKeyPress" ,true);

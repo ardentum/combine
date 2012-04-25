@@ -1,28 +1,3 @@
-var availableTags = [
-	"ActionScript",
-	"AppleScript",
-	"Asp",
-	"BASIC",
-	"C",
-	"C++",
-	"Clojure",
-	"COBOL",
-	"ColdFusion",
-	"Erlang",
-	"Fortran",
-	"Groovy",
-	"Haskell",
-	"Java",
-	"JavaScript",
-	"Lisp",
-	"Perl",
-	"PHP",
-	"Python",
-	"Ruby",
-	"Scala",
-	"Scheme"
-];
-
 var optionsData = {
 		source: {
 			type: "json",
@@ -57,7 +32,7 @@ var optionsData = {
 		},
 
 		checkOnReady: {
-			description: "Включает проверку установленного значения при инициализации виджета",
+			description: "Включает валидацию установленного значения при инициализации виджета",
 			value: true
 		},
 
@@ -74,7 +49,7 @@ var optionsData = {
 		defaultItem: {
 			type: "json",
 			description: "Значение по умолчанию. Можно задать в виде {value, label}",
-			value: ""
+			value: "123"
 		},
 
 		allowDefault: {
@@ -95,7 +70,7 @@ var optionsData = {
 
 		multiple: {
 			description: "Мультиселект",
-			value: true
+			value: false
 		},
 
 		addClass: {
@@ -144,6 +119,14 @@ var optionsData = {
 					description: "Группировка элементов списка",
 					type: "function",
 					value: "",
+					examples: [
+						{
+							text: "Группировка по первой букве",
+							value: function(item) {
+								return item.value.substring(0,1);
+							}
+						}
+					]
 				},
 
 				addClass: {
@@ -172,7 +155,7 @@ var optionsData = {
 
 		tokens : {
 			type: "moduleOptions",
-			description: "Свойства модуля мультиселекта",
+			description: "Свойства модуля мультиселекта. Зависит от свойства multiple.",
 
 			options: {
 				ordered: {
@@ -198,7 +181,13 @@ var optionsData = {
 
 				containerClass: {
 					description: "Список добавляемых контейнеру классов при инициализации",
-					value: ""
+					value: "",
+					examples: [
+						{
+							text: "Список тегов",
+							value: "ui-inline"
+						}
+					]
 				}
 			}
 		}
@@ -218,10 +207,45 @@ Option.prototype = {
 			.val(this.data.value);
 	},
 
+	selectExample: function() {
+		var $link = $(this);
+
+		$link.closest("label").find(":input")
+			.val($link.data("value"))
+			.change();
+
+		return false;
+	},
+
+	renderExamples: function() {
+		var $examples,
+			self = this;
+
+		if(this.data.examples) {
+			$examples = $("<div>").addClass("examples");
+
+			$("<h4/>")
+				.text("Примеры:")
+				.appendTo($examples);
+
+			$.each(this.data.examples, function(i, example) {
+				$("<a/>")
+					.attr("href", "#")
+					.text(example.text)
+					.data("value", example.value.toString())
+					.appendTo($examples)
+					.click(self.selectExample);
+			});
+		}
+
+		return $examples;
+	},
+
 	render: function(path) {
 		var $label,
 			$description,
-			$input;
+			$input,
+			$examples;
 
 		$label = $("<label/>")
 			.text(this.name + ":")
@@ -238,6 +262,12 @@ Option.prototype = {
 			.addClass("description")
 			.text(this.data.description)
 			.appendTo($label);
+
+		$examples = this.renderExamples();
+
+		if($examples) {
+			$examples.appendTo($label);
+		}
 
 		return $label;
 	}
@@ -301,22 +331,35 @@ var ModuleOptions = function(optionName, optionData) {
 };
 
 ModuleOptions.prototype.render = function() {
-	var $moduleOptions = $("<div>");
+	var $moduleOptions = $("<div/>"),
+		$header = $("<div/>");
 
 	$moduleOptions
 		.addClass("module-options");
 
+	$header
+		.addClass("header")
+		.appendTo($moduleOptions);
+
 	$("<h3/>")
 		.text(this.name)
-		.appendTo($moduleOptions);
+		.appendTo($header);
 
 	$("<p/>")
 		.addClass("description")
 		.text(this.data.description)
+		.appendTo($header);
+
+	$("<div/>")
+		.addClass("body")
 		.appendTo($moduleOptions);
 
+	$header.click(function() {
+		$moduleOptions.toggleClass("expanded");
+	});
+
 	renderOptions(this.data.options, this.name)
-		.appendTo($moduleOptions);
+		.appendTo($moduleOptions.find(".body"));
 
 	return $moduleOptions;
 };

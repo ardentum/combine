@@ -8,7 +8,8 @@ $.widget("combine.input", {
 
 	classes: {
 		CONTAINER: "ui-combine-container",
-		INPUT: "ui-combine-input"
+		INPUT:     "ui-combine-input",
+		DEFAULT:   "ui-combine-default-selected"
 	},
 
 	_create: function() {
@@ -18,6 +19,7 @@ $.widget("combine.input", {
 		widget.$container = $("<div></div>")
 			.addClass(widget.classes.CONTAINER)
 			.addClass(addClass)
+			.width(widget.element.width())
 			.insertBefore(widget.element)
 			.append(widget.element);
 
@@ -43,6 +45,7 @@ $.widget("combine.input", {
 
 					setTimeout(function() {
 						var val = $input.val();
+
 						$.when(widget.combine.check($input.val()))
 							.done(function(item) {
 								widget.combine.select(item);
@@ -90,6 +93,8 @@ $.widget("combine.input", {
 
 			"combine_type.combine_input": function() {
 				var val = widget.element.val();
+
+				widget.$container.removeClass(widget.classes.DEFAULT);
 
 				if(val.length >= widget.options.minLength) {
 					widget.selected = null;
@@ -180,6 +185,7 @@ $.widget("combine.input", {
 		this.term = itemData.label;
 		this.element.val(itemData.label);
 		this.checkedItem = this.selected = itemData;
+		this.$container.toggleClass(this.classes.DEFAULT, !!itemData._default);
 	},
 
 	destroy: function() {
